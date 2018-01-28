@@ -1,0 +1,213 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Windows.Forms;
+
+namespace Euromilhões_Virtual
+{
+   public partial class Form1 : Form
+   {
+       public Form1()
+       {
+           InitializeComponent();
+       }
+
+       private void verificarNumeros()
+       {
+           gerarChave();
+
+           int[] chavePlayer = new int[5];
+           int[] estrelasPlayer = new int[2];
+           int[] chaveApp = new int[5];
+           int[] estrelasApp = new int[2];
+           int[] numeroVencedores = new int[5] {0,0,0,0,0};
+           int[] estrelasVencedoras = new int[2] {0,0};
+           int countNumero = 0;
+           int countEstrelas = 0;
+            int premio = 0;
+
+           #region Leitura de Valores
+           chavePlayer[0] = Convert.ToInt32(txtp1.Text);
+           chavePlayer[1] = Convert.ToInt32(txtp2.Text);
+           chavePlayer[2] = Convert.ToInt32(txtp3.Text);
+           chavePlayer[3] = Convert.ToInt32(txtp4.Text);
+           chavePlayer[4] = Convert.ToInt32(txtp5.Text);
+           estrelasPlayer[0] = Convert.ToInt32(txtpe1.Text);
+           estrelasPlayer[1] = Convert.ToInt32(txtpe2.Text);
+           chaveApp[0] = Convert.ToInt32(txta1.Text);
+           chaveApp[1] = Convert.ToInt32(txta2.Text);
+           chaveApp[2] = Convert.ToInt32(txta3.Text);
+           chaveApp[3] = Convert.ToInt32(txta4.Text);
+           chaveApp[4] = Convert.ToInt32(txta5.Text);
+           estrelasApp[0] = Convert.ToInt32(txtae1.Text);
+           estrelasApp[1] = Convert.ToInt32(txtae2.Text);
+           #endregion
+
+           for (int i = 0; i < chavePlayer.Length; i++)
+           {
+               for (int x = 0; x < chavePlayer.Length; x++)
+               {
+                   if (chavePlayer[i] == chaveApp[x])
+                   {
+                       numeroVencedores[countNumero] = chavePlayer[i];
+                       countNumero++;
+                   }   
+               }
+           }
+
+           for (int i = 0; i < estrelasPlayer.Length; i++)
+           {
+               for (int x = 0; x < estrelasPlayer.Length; x++)
+               {
+                   if (estrelasPlayer[i] == estrelasApp[x])
+                   {
+                       estrelasVencedoras[countEstrelas] = estrelasPlayer[i];
+                       countEstrelas++;
+                   }
+               }
+           }
+
+           if (countNumero == 2)
+           {
+               premio = 13;
+           }
+
+           if ((countNumero == 2)&&(countEstrelas==1))
+           {
+               premio = 12;
+           }
+
+           if ((countNumero == 1) && (countEstrelas == 2))
+           {
+               premio = 11;
+           }
+
+           if (countNumero == 3)
+           {
+               premio = 10;
+           }
+
+           if ((countNumero == 3) && (countEstrelas == 1))
+           {
+               premio = 9;
+           }
+
+           if ((countNumero == 2) && (countEstrelas == 2))
+           {
+               premio = 8;
+           }
+
+           if ((countNumero == 3) && (countEstrelas == 2))
+           {
+               premio = 7;
+           }
+
+           if (countNumero == 4)
+           {
+               premio = 6;
+           }
+
+           if ((countNumero == 4) && (countEstrelas == 1))
+           {
+               premio = 5;
+           }
+
+           if ((countNumero == 4) && (countEstrelas == 2))
+           {
+               premio = 4;
+           }
+
+           if (countNumero == 5)
+           {
+               premio = 3;
+           }
+
+           if ((countNumero == 5) && (countEstrelas == 1))
+           {
+               premio = 2;
+           }
+
+           if ((countNumero == 5) && (countEstrelas == 2))
+           {
+               premio = 1;
+           }
+
+           if ((countNumero <= 1) && (countEstrelas < 2))
+           {
+               premio = 0;
+           }
+
+           if (premio > 0)
+           {
+               MessageBox.Show("Parabéns ganhou o " + premio.ToString() + "º prémio!");
+           }
+           else
+           {
+               MessageBox.Show("Lamentamos mas não ganhou nenhum prémio!");
+           }
+       }
+
+       private void gerarChave()
+       {
+           Random random = new Random();
+
+           int a = 0, b = 0, c = 0, d = 0, e = 0, f=0, g=0;
+
+           do
+           {
+               a = random.Next(1, 51);
+               b = random.Next(1, 51);
+               c = random.Next(1, 51);
+               d = random.Next(1, 51);
+               e = random.Next(1, 51);
+               f = random.Next(1, 9);
+               g = random.Next(1, 9);
+           }
+           while ((a == b) || (a == c) || (a == d) || (a == e) ||
+                  (b == c) || (b == d) || (b == e) ||
+                  (c == d) || (c == e) ||
+                  (d == e) || (f == g));
+
+           List<int> lista = new List<int>();
+
+           lista.Add(a);
+           lista.Add(b);
+           lista.Add(c);
+           lista.Add(d);
+           lista.Add(e);
+           lista.Add(f);
+           lista.Add(g);
+
+
+           lista.Sort();
+
+           txta1.Text = lista[0].ToString();
+
+           txta2.Text = lista[1].ToString();
+
+           txta3.Text = lista[2].ToString();
+
+           txta4.Text = lista[3].ToString();
+
+           txta5.Text = lista[4].ToString();
+
+           txtae1.Text = lista[5].ToString();
+
+           txtae2.Text = lista[6].ToString();
+       }
+
+       private void btnSimular_Click(object sender, EventArgs e)
+       {
+           verificarNumeros();
+       }
+
+       private void btnSair_Click(object sender, EventArgs e)
+       {
+           Application.Exit();
+       }
+   }
+}
